@@ -11,6 +11,9 @@ const CARD_MACHINES: CardMachine[] = [
   { id: 'm4', name: 'Rede iWl250 - Reserva', status: 'online' },
 ];
 
+type LayoutMode = 'grid' | 'list';
+type DensityMode = 'dense' | 'compact' | 'detailed';
+
 const POSView: React.FC<{
   products: Product[];
   addToCart: (p: Product) => void;
@@ -23,6 +26,10 @@ const POSView: React.FC<{
   const [search, setSearch] = useState('');
   const [aiLoading, setAiLoading] = useState(false);
   const [filteredIds, setFilteredIds] = useState<string[] | null>(null);
+  
+  // View Settings
+  const [layout, setLayout] = useState<LayoutMode>('grid');
+  const [density, setDensity] = useState<DensityMode>('compact');
 
   const handleAiSearch = async () => {
     if (!search.trim() || !aiEnabled) {
@@ -52,33 +59,61 @@ const POSView: React.FC<{
   return (
     <div className="flex flex-col lg:flex-row h-full gap-4 overflow-hidden animate-in fade-in duration-500">
       <div className="flex-1 flex flex-col min-w-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-4 border-b border-gray-100 flex flex-col sm:flex-row gap-3">
-          <div className="relative flex-1">
-            <input 
-              type="text" 
-              placeholder="Pesquisar produto ou código de barras..." 
-              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-blue-500 text-sm transition-all"
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                if (filteredIds) setFilteredIds(null);
-              }}
-              onKeyDown={(e) => e.key === 'Enter' && aiEnabled && handleAiSearch()}
-            />
-            <svg className="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        
+        {/* HEADER COM CONTROLES */}
+        <div className="p-4 border-b border-gray-100 space-y-3">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="relative flex-1">
+              <input 
+                type="text" 
+                placeholder="Pesquisar produto ou código de barras..." 
+                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-blue-500 text-sm transition-all"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  if (filteredIds) setFilteredIds(null);
+                }}
+                onKeyDown={(e) => e.key === 'Enter' && aiEnabled && handleAiSearch()}
+              />
+              <svg className="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            {aiEnabled && (
+              <button 
+                onClick={handleAiSearch} 
+                disabled={aiLoading || !search.trim()} 
+                className="px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-all disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm active:scale-95"
+              >
+                {aiLoading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>}
+                <span className="hidden sm:inline">IA Lookup</span>
+              </button>
+            )}
           </div>
-          {aiEnabled && (
-            <button 
-              onClick={handleAiSearch} 
-              disabled={aiLoading || !search.trim()} 
-              className="px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-all disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm active:scale-95"
-            >
-              {aiLoading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>}
-              <span className="hidden sm:inline">IA Lookup</span>
-            </button>
-          )}
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
+              <button onClick={() => setLayout('grid')} className={`p-1.5 rounded-lg transition-all cursor-pointer ${layout === 'grid' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+              </button>
+              <button onClick={() => setLayout('list')} className={`p-1.5 rounded-lg transition-all cursor-pointer ${layout === 'list' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+              </button>
+            </div>
+
+            <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
+              {(['dense', 'compact', 'detailed'] as DensityMode[]).map((d) => (
+                <button 
+                  key={d} 
+                  onClick={() => setDensity(d)} 
+                  className={`px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${density === d ? 'bg-white shadow-sm text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}
+                >
+                  {d === 'dense' ? 'Denso' : d === 'compact' ? 'Comp' : 'Det'}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
+        {/* LISTA DE PRODUTOS */}
         <div className="flex-1 overflow-y-auto p-4 scroll-smooth no-scrollbar">
           {displayedProducts.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-gray-400 py-20">
@@ -86,18 +121,47 @@ const POSView: React.FC<{
               <p className="text-sm">Nenhum produto encontrado</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className={
+              layout === 'grid' 
+                ? `grid gap-4 ${density === 'dense' ? 'grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6' : density === 'compact' ? 'grid-cols-2 sm:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'}`
+                : `flex flex-col gap-2`
+            }>
               {displayedProducts.map(p => (
-                <button key={p.id} onClick={() => addToCart(p)} className="group text-left bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg hover:border-blue-200 transition-all transform active:scale-95 cursor-pointer">
-                  <div className="aspect-square w-full overflow-hidden bg-gray-100">
-                    <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                  </div>
-                  <div className="p-3">
-                    <p className="text-xs text-blue-600 font-semibold mb-1 uppercase tracking-wider">{p.category}</p>
-                    <h3 className="text-sm font-bold text-gray-800 line-clamp-1">{p.name}</h3>
-                    <div className="flex justify-between items-end mt-2">
-                      <span className="text-blue-600 font-black">R$ {p.price.toFixed(2)}</span>
-                      <span className="text-[10px] text-gray-400">Qtd: {p.stock}</span>
+                <button 
+                  key={p.id} 
+                  onClick={() => addToCart(p)} 
+                  className={`group text-left bg-white border border-gray-100 transition-all transform active:scale-[0.98] cursor-pointer hover:shadow-md hover:border-blue-200 flex ${
+                    layout === 'grid' 
+                      ? 'flex-col rounded-2xl overflow-hidden' 
+                      : 'flex-row items-center p-2 rounded-xl'
+                  }`}
+                >
+                  {/* IMAGEM (Opcional no modo Denso se for Lista) */}
+                  {(density !== 'dense' || layout === 'grid') && (
+                    <div className={`${
+                      layout === 'grid' 
+                        ? `aspect-square w-full ${density === 'dense' ? 'h-24' : ''}` 
+                        : `shrink-0 rounded-lg overflow-hidden ${density === 'dense' ? 'w-10 h-10' : density === 'compact' ? 'w-16 h-16' : 'w-24 h-24'}`
+                    } bg-gray-100 overflow-hidden`}>
+                      <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    </div>
+                  )}
+
+                  <div className={`flex-1 ${layout === 'grid' ? (density === 'dense' ? 'p-2' : 'p-3') : 'px-4'}`}>
+                    {density === 'detailed' && (
+                      <p className="text-[10px] text-blue-600 font-bold mb-1 uppercase tracking-widest">{p.category}</p>
+                    )}
+                    <h3 className={`${density === 'dense' ? 'text-[11px]' : 'text-sm'} font-bold text-gray-800 line-clamp-1`}>
+                      {p.name}
+                    </h3>
+                    
+                    <div className={`flex ${layout === 'grid' ? 'flex-col mt-2' : 'items-center justify-between gap-4'}`}>
+                      <span className={`${density === 'detailed' ? 'text-lg' : density === 'dense' ? 'text-xs' : 'text-sm'} font-black text-blue-600`}>
+                        R$ {p.price.toFixed(2)}
+                      </span>
+                      {density !== 'dense' && (
+                        <span className="text-[10px] text-gray-400 font-medium">Estoque: {p.stock}</span>
+                      )}
                     </div>
                   </div>
                 </button>
@@ -107,6 +171,7 @@ const POSView: React.FC<{
         </div>
       </div>
 
+      {/* CARRINHO (Mantido o mesmo) */}
       <div className="w-full lg:w-[400px] flex flex-col bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden shrink-0">
         <div className="p-5 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
           <h2 className="text-lg font-bold flex items-center gap-2">

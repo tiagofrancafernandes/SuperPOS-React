@@ -27,7 +27,6 @@ const POSView: React.FC<{
   const [aiLoading, setAiLoading] = useState(false);
   const [filteredIds, setFilteredIds] = useState<string[] | null>(null);
   
-  // View Settings
   const [layout, setLayout] = useState<LayoutMode>('grid');
   const [density, setDensity] = useState<DensityMode>('compact');
 
@@ -58,10 +57,11 @@ const POSView: React.FC<{
 
   return (
     <div className="flex flex-col lg:flex-row h-full gap-4 overflow-hidden animate-in fade-in duration-500">
+      {/* AREA DE PRODUTOS */}
       <div className="flex-1 flex flex-col min-w-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         
-        {/* HEADER COM CONTROLES */}
-        <div className="p-4 border-b border-gray-100 space-y-3">
+        {/* HEADER FIXO DE PRODUTOS */}
+        <div className="p-4 border-b border-gray-100 space-y-3 shrink-0 bg-white">
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
               <input 
@@ -81,7 +81,7 @@ const POSView: React.FC<{
               <button 
                 onClick={handleAiSearch} 
                 disabled={aiLoading || !search.trim()} 
-                className="px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-all disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm active:scale-95"
+                className="px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-all disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm active:scale-95 shrink-0"
               >
                 {aiLoading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>}
                 <span className="hidden sm:inline">IA Lookup</span>
@@ -113,7 +113,7 @@ const POSView: React.FC<{
           </div>
         </div>
 
-        {/* LISTA DE PRODUTOS */}
+        {/* LISTA DE PRODUTOS COM ROLAGEM VERTICAL */}
         <div className="flex-1 overflow-y-auto p-4 scroll-smooth no-scrollbar">
           {displayedProducts.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-gray-400 py-20">
@@ -136,7 +136,6 @@ const POSView: React.FC<{
                       : 'flex-row items-center p-2 rounded-xl'
                   }`}
                 >
-                  {/* IMAGEM (Opcional no modo Denso se for Lista) */}
                   {(density !== 'dense' || layout === 'grid') && (
                     <div className={`${
                       layout === 'grid' 
@@ -171,9 +170,10 @@ const POSView: React.FC<{
         </div>
       </div>
 
-      {/* CARRINHO (Mantido o mesmo) */}
-      <div className="w-full lg:w-[400px] flex flex-col bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden shrink-0">
-        <div className="p-5 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+      {/* CARRINHO DE COMPRAS FIXO */}
+      <div className="w-full lg:w-[400px] flex flex-col bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden shrink-0 h-full">
+        {/* CABEÇALHO DO CARRINHO */}
+        <div className="p-5 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center shrink-0">
           <h2 className="text-lg font-bold flex items-center gap-2">
             <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
             Carrinho
@@ -181,6 +181,7 @@ const POSView: React.FC<{
           <span className="px-2 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-md uppercase">{cart.length} itens</span>
         </div>
 
+        {/* ITENS DO CARRINHO COM ROLAGEM VERTICAL */}
         <div className="flex-1 overflow-y-auto no-scrollbar p-4 space-y-3">
           {cart.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-gray-400 opacity-60">
@@ -210,7 +211,8 @@ const POSView: React.FC<{
           )}
         </div>
 
-        <div className="p-5 bg-gray-50 border-t border-gray-100 space-y-4">
+        {/* RODAPÉ DO CARRINHO FIXO NA BASE */}
+        <div className="p-5 bg-white border-t border-gray-100 space-y-4 shrink-0 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
           <div className="flex justify-between items-center">
             <span className="text-gray-500 font-medium">Subtotal</span>
             <span className="text-xl font-black text-gray-800">R$ {total.toFixed(2)}</span>
@@ -229,7 +231,7 @@ const HistoryView: React.FC<{ sales: SaleRecord[] }> = ({ sales }) => {
   const [expanded, setExpanded] = useState<string | null>(null);
   return (
     <div className="bg-white h-full rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col animate-in slide-in-from-bottom-4 duration-500">
-      <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/30">
+      <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/30 shrink-0">
         <div>
           <h2 className="text-2xl font-black text-gray-900">Histórico de Vendas</h2>
           <p className="text-sm text-gray-500">Listagem de todas as transações realizadas.</p>
@@ -291,7 +293,7 @@ const ReportsView: React.FC<{ sales: SaleRecord[] }> = ({ sales }) => {
   }, [sales]);
   const maxCategory = Math.max(...Object.values(stats.categoryRevenue), 1);
   return (
-    <div className="space-y-6 h-full overflow-y-auto no-scrollbar pb-10 animate-in fade-in duration-500">
+    <div className="space-y-6 h-full overflow-y-auto no-scrollbar pb-10 animate-in fade-in duration-500 p-1">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-blue-600 p-6 rounded-[2rem] text-white shadow-xl shadow-blue-200">
           <p className="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Receita Total</p>
@@ -612,7 +614,7 @@ export default function App() {
                           <div className="flex items-center gap-5 text-left">
                             <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center">
                               {m === 'pix' && <svg className="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m-3 3h2m3-3h2m-5 3v2m4-2v2m-4 7h2m3-3h2m-5 3v2m4-2v2M6 10V8a2 2 0 012-2h2m4 0h2a2 2 0 012 2v2m0 4v2a2 2 0 01-2 2h-2m-4 0H8a2 2 0 01-2-2v-2M9 11.5v1m3-1v1m3-1v1"/></svg>}
-                              {m === 'card' && <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>}
+                              {m === 'card' && <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3-3v8a3 3 0 003 3z"/></svg>}
                               {m === 'cash' && <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>}
                             </div>
                             <div>

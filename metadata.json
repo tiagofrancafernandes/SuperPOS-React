@@ -1,0 +1,7 @@
+{
+  "name": "SuperPOS Pro",
+  "description": "A high-performance, mobile-responsive Point of Sale system for supermarkets and retail, featuring AI-powered product lookup and smart inventory insights.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

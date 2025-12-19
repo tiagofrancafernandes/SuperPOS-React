@@ -71,7 +71,7 @@ const POSView: React.FC<{
             <button 
               onClick={handleAiSearch} 
               disabled={aiLoading || !search.trim()} 
-              className="px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm active:scale-95"
+              className="px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-all disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm active:scale-95"
             >
               {aiLoading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>}
               <span className="hidden sm:inline">IA Lookup</span>
@@ -88,7 +88,7 @@ const POSView: React.FC<{
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
               {displayedProducts.map(p => (
-                <button key={p.id} onClick={() => addToCart(p)} className="group text-left bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg hover:border-blue-200 transition-all transform active:scale-95">
+                <button key={p.id} onClick={() => addToCart(p)} className="group text-left bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg hover:border-blue-200 transition-all transform active:scale-95 cursor-pointer">
                   <div className="aspect-square w-full overflow-hidden bg-gray-100">
                     <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                   </div>
@@ -132,11 +132,11 @@ const POSView: React.FC<{
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-white">
-                    <button onClick={() => updateQuantity(item.id, -1)} className="p-1 px-2 hover:bg-gray-100 text-gray-500">-</button>
+                    <button onClick={() => updateQuantity(item.id, -1)} className="p-1 px-2 hover:bg-gray-100 text-gray-500 cursor-pointer"> - </button>
                     <span className="px-2 text-xs font-bold text-gray-700">{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, 1)} className="p-1 px-2 hover:bg-gray-100 text-gray-500">+</button>
+                    <button onClick={() => updateQuantity(item.id, 1)} className="p-1 px-2 hover:bg-gray-100 text-gray-500 cursor-pointer"> + </button>
                   </div>
-                  <button onClick={() => removeFromCart(item.id)} className="p-1 text-red-400 hover:text-red-600 transition-colors">
+                  <button onClick={() => removeFromCart(item.id)} className="p-1 text-red-400 hover:text-red-600 transition-colors cursor-pointer">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                   </button>
                 </div>
@@ -150,7 +150,7 @@ const POSView: React.FC<{
             <span className="text-gray-500 font-medium">Subtotal</span>
             <span className="text-xl font-black text-gray-800">R$ {total.toFixed(2)}</span>
           </div>
-          <button disabled={cart.length === 0} onClick={onCheckout} className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 disabled:opacity-50 disabled:shadow-none transition-all flex items-center justify-center gap-3 active:scale-95">
+          <button disabled={cart.length === 0} onClick={onCheckout} className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 disabled:opacity-50 disabled:shadow-none transition-all flex items-center justify-center gap-3 active:scale-95 cursor-pointer disabled:cursor-not-allowed">
             Finalizar Compra
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </button>
@@ -160,7 +160,6 @@ const POSView: React.FC<{
   );
 };
 
-// Histórico e Relatórios mantidos...
 const HistoryView: React.FC<{ sales: SaleRecord[] }> = ({ sales }) => {
   const [expanded, setExpanded] = useState<string | null>(null);
   return (
@@ -202,7 +201,7 @@ const HistoryView: React.FC<{ sales: SaleRecord[] }> = ({ sales }) => {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <button className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors">
+                      <button className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors cursor-pointer">
                         <svg className={`w-4 h-4 transition-transform ${expanded === sale.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>
                       </button>
                     </td>
@@ -267,7 +266,6 @@ export default function App() {
   const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [sales, setSales] = useState<SaleRecord[]>([]);
-  const [clients, setClients] = useState<Client[]>(MOCK_CLIENTS);
   
   const [checkoutStep, setCheckoutStep] = useState<PaymentStep | null>(null);
   const [remainingBalance, setRemainingBalance] = useState<number>(0);
@@ -278,12 +276,9 @@ export default function App() {
   const [selectedMachine, setSelectedMachine] = useState<CardMachine | 'offline' | null>(null);
   const [processingStatus, setProcessingStatus] = useState<'loading' | 'success' | 'error' | 'cancelled' | null>(null);
 
-  const [contactType, setContactType] = useState<ContactType | null>(null);
-  const [contactValue, setContactValue] = useState('');
   const [isGeneratingNote, setIsGeneratingNote] = useState(false);
   const [noteFinished, setNoteFinished] = useState(false);
   const [fiscalClient, setFiscalClient] = useState<Partial<Client>>({ document: '', name: '' });
-  const [isAddingClient, setIsAddingClient] = useState(false);
 
   const [isConfirmingAbandon, setIsConfirmingAbandon] = useState(false);
   const [abandonPassword, setAbandonPassword] = useState('');
@@ -293,7 +288,6 @@ export default function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isKioskMode, setIsKioskMode] = useState(false);
   
-  // IA State
   const [isAiAvailable, setIsAiAvailable] = useState(false);
   const [isAiEnabled, setIsAiEnabled] = useState(true);
 
@@ -302,7 +296,6 @@ export default function App() {
   const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // Detectar API Key para habilitar IA
     const apiKey = typeof process !== 'undefined' ? process.env.API_KEY : '';
     setIsAiAvailable(!!apiKey);
     if (!apiKey) setIsAiEnabled(false);
@@ -413,8 +406,6 @@ export default function App() {
     setNoteFinished(false);
     setIsGeneratingNote(false);
     setFiscalClient({ document: '', name: '' });
-    setContactType(null);
-    setContactValue('');
   };
 
   const handleAbandonRequest = () => {
@@ -437,18 +428,6 @@ export default function App() {
     }, 4000);
   };
 
-  const startCardOnlineFlow = (machine: CardMachine) => {
-    const amt = parseFloat(paymentAmount);
-    setSelectedMachine(machine);
-    setCheckoutStep('PROCESSING');
-    setProcessingStatus('loading');
-    setTimeout(() => {
-      setProcessingStatus('success');
-      const label = `Cartão (${cardType}) - ${machine.name}`;
-      setTimeout(() => recordPartialPayment(label, amt), 2000);
-    }, 3000);
-  };
-
   const handleFiscalNote = () => {
     if (!fiscalClient.document || !fiscalClient.name) { alert("Dados incompletos."); return; }
     setIsGeneratingNote(true);
@@ -467,12 +446,10 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col max-h-screen overflow-hidden bg-gray-50">
       
-      {/* SHOW TOPBAR BUTTON */}
       {isKioskMode && (
-        <button onClick={() => setIsKioskMode(false)} className="fixed top-4 left-4 z-[100] p-3 bg-white/90 backdrop-blur shadow-lg rounded-xl hover:bg-white text-gray-800 transition-all border border-gray-100"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg></button>
+        <button onClick={() => setIsKioskMode(false)} className="fixed top-4 left-4 z-[100] p-3 bg-white/90 backdrop-blur shadow-lg rounded-xl hover:bg-white text-gray-800 transition-all border border-gray-100 cursor-pointer"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg></button>
       )}
 
-      {/* TOPBAR NAVIGATION */}
       {!isKioskMode && (
         <nav className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shrink-0 shadow-sm z-20 transition-all duration-300">
           <div className="flex items-center gap-3">
@@ -482,14 +459,14 @@ export default function App() {
 
           <div className="flex bg-gray-100 p-1 rounded-xl overflow-x-auto no-scrollbar max-w-[50%] md:max-w-none">
             {[ViewMode.POS, ViewMode.INVENTORY, ViewMode.HISTORY, ViewMode.REPORTS].map(v => (
-              <button key={v} onClick={() => changeRoute(v)} className={`px-4 py-2 rounded-lg text-[10px] sm:text-sm font-bold transition-all whitespace-nowrap ${view === v ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>
+              <button key={v} onClick={() => changeRoute(v)} className={`px-4 py-2 rounded-lg text-[10px] sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${view === v ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>
                 {v.toUpperCase()}
               </button>
             ))}
           </div>
 
           <div className="flex items-center gap-4">
-            <button onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} className="w-9 h-9 rounded-full bg-blue-100 border-2 border-white overflow-hidden shadow-sm ring-blue-500/20 ring-0 hover:ring-4 transition-all">
+            <button onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} className="w-9 h-9 rounded-full bg-blue-100 border-2 border-white overflow-hidden shadow-sm ring-blue-500/20 ring-0 hover:ring-4 transition-all cursor-pointer">
               <img src="https://picsum.photos/seed/user/100/100" alt="User" />
             </button>
             {isUserMenuOpen && (
@@ -499,11 +476,11 @@ export default function App() {
                   <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Operador de Caixa</p>
                 </div>
                 <div className="p-2 space-y-1">
-                  <button onClick={() => { setIsSettingsOpen(true); setIsUserMenuOpen(false); }} className="w-full text-left px-4 py-3 text-sm font-bold text-gray-600 hover:bg-gray-50 rounded-xl flex items-center gap-3"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Configurações</button>
-                  <button onClick={toggleKioskMode} className="w-full text-left px-4 py-3 text-sm font-bold text-gray-600 hover:bg-gray-50 rounded-xl flex items-center gap-3 transition-colors"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>Ocultar Topo (Kiosk)</button>
+                  <button onClick={() => { setIsSettingsOpen(true); setIsUserMenuOpen(false); }} className="w-full text-left px-4 py-3 text-sm font-bold text-gray-600 hover:bg-gray-50 rounded-xl flex items-center gap-3 cursor-pointer"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Configurações</button>
+                  <button onClick={toggleKioskMode} className="w-full text-left px-4 py-3 text-sm font-bold text-gray-600 hover:bg-gray-50 rounded-xl flex items-center gap-3 transition-colors cursor-pointer"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>Ocultar Topo (Kiosk)</button>
                 </div>
                 <div className="px-2 pt-1 border-t border-gray-100 mt-1">
-                  <button onClick={() => window.location.reload()} className="w-full text-left px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 rounded-xl flex items-center gap-3"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>Sair</button>
+                  <button onClick={() => window.location.reload()} className="w-full text-left px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 rounded-xl flex items-center gap-3 cursor-pointer"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>Sair</button>
                 </div>
               </div>
             )}
@@ -534,11 +511,9 @@ export default function App() {
         {view === ViewMode.REPORTS && <ReportsView sales={sales} />}
       </main>
 
-      {/* PDV MODAL SYSTEM */}
       {checkoutStep && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/70 backdrop-blur-md transition-all">
           <div className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-300">
-            {/* SELECT_METHOD */}
             {checkoutStep === 'SELECT_METHOD' && (
               <div className="p-8">
                 <div className="mb-8 flex justify-between items-start">
@@ -551,7 +526,7 @@ export default function App() {
                       </div>
                     </div>
                   </div>
-                  <button onClick={() => setCheckoutStep(null)} className="p-2.5 text-gray-400 bg-gray-50 rounded-full"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                  <button onClick={() => setCheckoutStep(null)} className="p-2.5 text-gray-400 bg-gray-50 rounded-full cursor-pointer"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
                 </div>
                 
                 {isConfirmingAbandon ? (
@@ -560,15 +535,15 @@ export default function App() {
                     <input autoFocus type="password" placeholder="SENHA DO GERENTE (1234)" value={abandonPassword} onChange={(e) => setAbandonPassword(e.target.value)}
                       className={`w-full p-6 bg-gray-50 rounded-3xl text-center text-2xl tracking-widest font-black border-2 transition-all ${abandonError ? 'border-red-500 animate-shake' : 'border-transparent focus:border-blue-500'}`} />
                     <div className="grid grid-cols-2 gap-4">
-                      <button onClick={() => setIsConfirmingAbandon(false)} className="py-5 font-bold text-gray-500 bg-gray-100 rounded-3xl">Voltar</button>
-                      <button onClick={handleAbandonRequest} className="py-5 font-black text-white bg-red-600 rounded-3xl shadow-lg shadow-red-200">Confirmar</button>
+                      <button onClick={() => setIsConfirmingAbandon(false)} className="py-5 font-bold text-gray-500 bg-gray-100 rounded-3xl cursor-pointer">Voltar</button>
+                      <button onClick={handleAbandonRequest} className="py-5 font-black text-white bg-red-600 rounded-3xl shadow-lg shadow-red-200 cursor-pointer">Confirmar</button>
                     </div>
                   </div>
                 ) : (
                   <>
                     <div className="grid grid-cols-1 gap-4">
                       {['pix', 'card', 'cash'].map((m) => (
-                        <button key={m} onClick={() => selectMethod(m as any)} className="flex items-center justify-between p-6 rounded-[2rem] bg-gray-50/50 border-2 border-transparent hover:border-blue-500 hover:bg-white transition-all group active:scale-[0.98]">
+                        <button key={m} onClick={() => selectMethod(m as any)} className="flex items-center justify-between p-6 rounded-[2rem] bg-gray-50/50 border-2 border-transparent hover:border-blue-500 hover:bg-white transition-all group active:scale-[0.98] cursor-pointer">
                           <div className="flex items-center gap-5 text-left">
                             <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center">
                               {m === 'pix' && <svg className="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m-3 3h2m3-3h2m-5 3v2m4-2v2m-4 7h2m3-3h2m-5 3v2m4-2v2M6 10V8a2 2 0 012-2h2m4 0h2a2 2 0 012 2v2m0 4v2a2 2 0 01-2 2h-2m-4 0H8a2 2 0 01-2-2v-2M9 11.5v1m3-1v1m3-1v1"/></svg>}
@@ -583,17 +558,16 @@ export default function App() {
                         </button>
                       ))}
                     </div>
-                    <button onClick={() => { setIsConfirmingAbandon(true); setAbandonPassword(''); }} className="mt-8 w-full text-center text-[10px] font-black text-gray-400 hover:text-red-500 transition-colors uppercase tracking-[0.2em]">Cancelar Venda</button>
+                    <button onClick={() => { setIsConfirmingAbandon(true); setAbandonPassword(''); }} className="mt-8 w-full text-center text-[10px] font-black text-gray-400 hover:text-red-500 transition-colors uppercase tracking-[0.2em] cursor-pointer">Cancelar Venda</button>
                   </>
                 )}
               </div>
             )}
 
-            {/* SET_AMOUNT */}
             {checkoutStep === 'SET_AMOUNT' && (
               <div className="p-8">
                 <div className="flex items-center gap-4 mb-8">
-                  <button onClick={() => setCheckoutStep('SELECT_METHOD')} className="p-2.5 text-gray-400 bg-gray-50 rounded-xl"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg></button>
+                  <button onClick={() => setCheckoutStep('SELECT_METHOD')} className="p-2.5 text-gray-400 bg-gray-50 rounded-xl cursor-pointer"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg></button>
                   <h3 className="text-2xl font-black text-gray-900">Lançar Valor</h3>
                 </div>
                 <div className="space-y-8">
@@ -601,12 +575,11 @@ export default function App() {
                     <span className="absolute left-7 top-1/2 -translate-y-1/2 text-3xl font-black text-gray-300">R$</span>
                     <input autoFocus type="number" step="0.01" value={paymentAmount} onChange={(e) => setPaymentAmount(e.target.value)} className="w-full pl-20 pr-8 py-10 bg-gray-50 rounded-[2.5rem] text-5xl font-black text-blue-600 focus:ring-4 focus:ring-blue-100 transition-all border-none" />
                   </div>
-                  <button onClick={confirmAmount} className="w-full py-7 bg-blue-600 text-white rounded-[2.5rem] font-black text-xl shadow-xl shadow-blue-200 active:scale-[0.98] transition-all">Confirmar Pagamento</button>
+                  <button onClick={confirmAmount} className="w-full py-7 bg-blue-600 text-white rounded-[2.5rem] font-black text-xl shadow-xl shadow-blue-200 active:scale-[0.98] transition-all cursor-pointer">Confirmar Pagamento</button>
                 </div>
               </div>
             )}
 
-            {/* SALE_COMPLETE */}
             {checkoutStep === 'SALE_COMPLETE' && (
               <div className="p-10 text-center relative">
                 <div className="absolute top-8 right-8 w-14 h-14 flex items-center justify-center bg-blue-50 text-blue-600 rounded-2xl font-black text-xl border-2 border-blue-100 shadow-sm animate-pulse">{countdown}</div>
@@ -614,18 +587,17 @@ export default function App() {
                 <h3 className="text-4xl font-black text-gray-900 mb-2">Concluído!</h3>
                 <p className="text-gray-500 mb-10 text-lg">Transação autorizada com sucesso.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <button onClick={() => setCheckoutStep('FISCAL_NOTE')} className="p-5 bg-gray-50 rounded-3xl hover:bg-blue-50 transition-all font-black flex items-center gap-3 justify-center">Emitir Nota</button>
-                  <button onClick={resetSystem} className="sm:col-span-2 py-7 bg-blue-600 text-white rounded-[2.5rem] font-black text-xl hover:bg-blue-700 active:scale-95 transition-all shadow-xl shadow-blue-200 uppercase tracking-widest">Novo Pedido</button>
+                  <button onClick={() => setCheckoutStep('FISCAL_NOTE')} className="p-5 bg-gray-50 rounded-3xl hover:bg-blue-50 transition-all font-black flex items-center gap-3 justify-center cursor-pointer">Emitir Nota</button>
+                  <button onClick={resetSystem} className="sm:col-span-2 py-7 bg-blue-600 text-white rounded-[2.5rem] font-black text-xl hover:bg-blue-700 active:scale-95 transition-all shadow-xl shadow-blue-200 uppercase tracking-widest cursor-pointer">Novo Pedido</button>
                 </div>
               </div>
             )}
             
-            {/* FISCAL NOTE */}
             {checkoutStep === 'FISCAL_NOTE' && (
               <div className="p-8 space-y-6">
                  <div className="flex justify-between items-center">
                   <h3 className="text-2xl font-black text-gray-900">Emissão de Nota</h3>
-                  <button onClick={() => setCheckoutStep('SALE_COMPLETE')} className="p-2 bg-gray-100 rounded-full"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                  <button onClick={() => setCheckoutStep('SALE_COMPLETE')} className="p-2 bg-gray-100 rounded-full cursor-pointer"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
                 </div>
                 {isGeneratingNote ? (
                   <div className="py-16 flex flex-col items-center gap-8"><div className="w-20 h-20 border-8 border-blue-600 border-t-transparent rounded-full animate-spin"></div><p className="font-black text-xl">Transmitindo para SEFAZ...</p></div>
@@ -633,7 +605,7 @@ export default function App() {
                   <div className="py-10 flex flex-col items-center gap-8 text-center animate-in zoom-in">
                     <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center shadow-lg"><svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7"/></svg></div>
                     <h4 className="text-3xl font-black">Nota Autorizada!</h4>
-                    <button onClick={resetSystem} className="w-full py-5 bg-gray-900 text-white font-black rounded-3xl">Fechar e Novo Pedido</button>
+                    <button onClick={resetSystem} className="w-full py-5 bg-gray-900 text-white font-black rounded-3xl cursor-pointer">Fechar e Novo Pedido</button>
                   </div>
                 ) : (
                   <div className="space-y-6">
@@ -641,24 +613,21 @@ export default function App() {
                       <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">CPF/CNPJ Destinatário</p>
                       <input placeholder="000.000.000-00" value={fiscalClient.document} onChange={e => setFiscalClient({...fiscalClient, document: e.target.value})} className="w-full bg-transparent font-black outline-none" />
                     </div>
-                    <button onClick={handleFiscalNote} className="w-full py-7 bg-blue-600 text-white rounded-[2.5rem] font-black text-xl shadow-xl">TRANSMITIR NF-e</button>
+                    <button onClick={handleFiscalNote} className="w-full py-7 bg-blue-600 text-white rounded-[2.5rem] font-black text-xl shadow-xl cursor-pointer">TRANSMITIR NF-e</button>
                   </div>
                 )}
               </div>
             )}
-
-            {/* Outros estados omitidos para brevidade (PIX_QR, PROCESSING etc) */}
           </div>
         </div>
       )}
 
-      {/* SETTINGS MODAL */}
       {isSettingsOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
            <div className="bg-white w-full max-w-xl rounded-[3rem] shadow-2xl p-10 animate-in zoom-in-95">
              <div className="flex justify-between items-center mb-8">
                <h3 className="text-3xl font-black text-gray-900">Ajustes do Sistema</h3>
-               <button onClick={() => setIsSettingsOpen(false)} className="p-3 bg-gray-50 rounded-full text-gray-400 hover:text-gray-900 transition-colors"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+               <button onClick={() => setIsSettingsOpen(false)} className="p-3 bg-gray-50 rounded-full text-gray-400 hover:text-gray-900 transition-colors cursor-pointer"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
              </div>
              
              <div className="space-y-6">
@@ -673,7 +642,7 @@ export default function App() {
                    <button 
                     disabled={!isAiAvailable}
                     onClick={() => setIsAiEnabled(!isAiEnabled)} 
-                    className={`w-14 h-8 rounded-full relative p-1 transition-all ${isAiEnabled ? 'bg-indigo-600' : 'bg-gray-300'}`}
+                    className={`w-14 h-8 rounded-full relative p-1 transition-all cursor-pointer disabled:cursor-not-allowed ${isAiEnabled ? 'bg-indigo-600' : 'bg-gray-300'}`}
                    >
                      <div className={`w-6 h-6 bg-white rounded-full absolute top-1 transition-all ${isAiEnabled ? 'right-1' : 'left-1'}`}></div>
                    </button>
@@ -684,7 +653,7 @@ export default function App() {
                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Configurações de Caixa</p>
                  <div className="flex items-center justify-between p-6 bg-gray-50 rounded-3xl">
                     <span className="font-bold text-gray-800">Modo Autoatendimento (Kiosk)</span>
-                    <button onClick={toggleKioskMode} className={`w-14 h-8 rounded-full relative p-1 transition-all ${isKioskMode ? 'bg-blue-600' : 'bg-gray-300'}`}>
+                    <button onClick={toggleKioskMode} className={`w-14 h-8 rounded-full relative p-1 transition-all cursor-pointer ${isKioskMode ? 'bg-blue-600' : 'bg-gray-300'}`}>
                       <div className={`w-6 h-6 bg-white rounded-full absolute top-1 transition-all ${isKioskMode ? 'right-1' : 'left-1'}`}></div>
                     </button>
                  </div>
@@ -692,7 +661,7 @@ export default function App() {
              </div>
 
              <div className="flex gap-4 mt-10">
-                <button onClick={() => setIsSettingsOpen(false)} className="flex-1 py-5 bg-blue-600 text-white font-black rounded-3xl shadow-xl shadow-blue-200">Salvar Alterações</button>
+                <button onClick={() => setIsSettingsOpen(false)} className="flex-1 py-5 bg-blue-600 text-white font-black rounded-3xl shadow-xl shadow-blue-200 cursor-pointer">Salvar Alterações</button>
              </div>
            </div>
         </div>

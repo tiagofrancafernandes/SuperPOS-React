@@ -65,7 +65,7 @@ const POSView: React.FC<{
             />
             <svg className="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
           </div>
-          <button onClick={handleAiSearch} disabled={aiLoading} className="hidden md:block px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
+          <button onClick={handleAiSearch} disabled={aiLoading} className="px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
             {aiLoading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>}
             IA Lookup
           </button>
@@ -249,7 +249,6 @@ const ReportsView: React.FC<{ sales: SaleRecord[] }> = ({ sales }) => {
     
     sales.forEach(s => {
       s.payments.forEach(p => {
-        // Normalize key for grouping (Pix, Cartão, Dinheiro)
         let key = p.method.split(' ')[0];
         if (key.includes('Cartão')) key = 'Cartão';
         methodCounts[key] = (methodCounts[key] || 0) + p.amount;
@@ -284,7 +283,7 @@ const ReportsView: React.FC<{ sales: SaleRecord[] }> = ({ sales }) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm">
-          <h3 className="text-lg font-black text-gray-900 mb-6">Desempenho por Categoria</h3>
+          <h3 className="text-lg font-black text-gray-900 mb-6">Faturamento por Categoria</h3>
           <div className="space-y-4">
             {Object.entries(stats.categoryRevenue).sort((a,b) => b[1]-a[1]).map(([cat, rev]) => (
               <div key={cat}>
@@ -781,27 +780,6 @@ export default function App() {
               </div>
             )}
 
-            {/* CONTACT_INPUT */}
-            {checkoutStep === 'CONTACT_INPUT' && contactType && (
-              <div className="p-8">
-                <h3 className="text-2xl font-black text-gray-900 mb-6 flex items-center gap-3">
-                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                  Enviar Comprovante
-                </h3>
-                <div className="space-y-5">
-                  <div className="p-6 bg-gray-50 rounded-3xl">
-                    <p className="text-[10px] font-black text-gray-400 uppercase mb-2 tracking-widest">Digite o {contactType === 'email' ? 'e-mail' : 'número'}</p>
-                    <input autoFocus type={contactType === 'email' ? 'email' : 'tel'} placeholder={contactType === 'email' ? 'cliente@exemplo.com' : '(00) 00000-0000'} value={contactValue} onChange={(e) => setContactValue(e.target.value)}
-                      className="w-full bg-transparent text-xl font-bold border-none focus:ring-0 p-0 text-blue-600 placeholder:text-gray-300" />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <button onClick={() => setCheckoutStep('SALE_COMPLETE')} className="py-5 bg-gray-100 font-black text-gray-500 rounded-3xl">CANCELAR</button>
-                    <button onClick={sendContact} className="py-5 bg-blue-600 text-white font-black rounded-3xl shadow-lg shadow-blue-200">ENVIAR</button>
-                  </div>
-                </div>
-              </div>
-            )}
-
             {/* SALE_COMPLETE */}
             {checkoutStep === 'SALE_COMPLETE' && (
               <div className="p-10 text-center relative">
@@ -813,24 +791,11 @@ export default function App() {
                 <p className="text-gray-500 mb-10 text-lg">Transação autorizada e processada.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <button onClick={() => setCheckoutStep('FISCAL_NOTE')} className="p-5 bg-gray-50 rounded-3xl hover:bg-blue-50 transition-all font-black flex items-center gap-3"><svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> Emitir Nota</button>
-                  <button onClick={() => completionAction('email')} className="p-5 bg-gray-50 rounded-3xl hover:bg-blue-50 transition-all font-black flex items-center gap-3"><svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 00-2 2z"/></svg> E-mail</button>
+                  <button onClick={() => completionAction('email')} className="p-5 bg-gray-50 rounded-3xl hover:bg-blue-50 transition-all font-black flex items-center gap-3"><svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> E-mail</button>
                   <button onClick={() => completionAction('whatsapp')} className="p-5 bg-gray-50 rounded-3xl hover:bg-teal-50 transition-all font-black text-teal-700 flex items-center gap-3">WhatsApp</button>
                   <button onClick={() => completionAction('sms')} className="p-5 bg-gray-50 rounded-3xl hover:bg-blue-50 transition-all font-black text-blue-400 flex items-center gap-3">SMS</button>
                   <button onClick={resetSystem} className="sm:col-span-2 py-7 bg-blue-600 text-white rounded-[2.5rem] font-black text-xl hover:bg-blue-700 active:scale-95 transition-all shadow-xl shadow-blue-200 uppercase tracking-widest">Novo Atendimento</button>
                 </div>
-              </div>
-            )}
-
-            {/* SALE_CANCELLED */}
-            {checkoutStep === 'SALE_CANCELLED' && (
-              <div className="p-12 text-center relative animate-in fade-in zoom-in duration-300">
-                <div className="absolute top-8 right-8 w-14 h-14 flex items-center justify-center bg-red-50 text-red-600 rounded-2xl font-black text-xl border-2 border-red-100">{countdown}</div>
-                <div className="w-24 h-24 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-red-100">
-                  <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M6 18L18 6M6 6l12 12"/></svg>
-                </div>
-                <h3 className="text-4xl font-black text-gray-900 mb-2">Venda Anulada</h3>
-                <p className="text-gray-500 mb-10 text-lg">Os itens retornaram ao estoque.</p>
-                <button onClick={resetSystem} className="w-full py-7 bg-gray-900 text-white rounded-[2.5rem] font-black text-xl hover:bg-black active:scale-95 transition-all uppercase tracking-widest">Fechar Cupom</button>
               </div>
             )}
             
@@ -982,14 +947,6 @@ export default function App() {
                    <div className="flex items-center gap-4"><div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-blue-600 shadow-sm"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg></div><span className="font-bold text-gray-800">Feedback sonoro no escaneamento</span></div>
                    <div className="w-14 h-8 bg-blue-600 rounded-full relative p-1 cursor-pointer transition-all"><div className="w-6 h-6 bg-white rounded-full absolute right-1"></div></div>
                  </div>
-                 <div className="flex items-center justify-between p-6 bg-gray-50 rounded-3xl opacity-50">
-                   <div className="flex items-center gap-4"><div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-gray-400 shadow-sm"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg></div><span className="font-bold text-gray-800">Impressão térmica via Bluetooth</span></div>
-                   <div className="w-14 h-8 bg-gray-200 rounded-full relative p-1 cursor-not-allowed"><div className="w-6 h-6 bg-white rounded-full absolute left-1"></div></div>
-                 </div>
-               </div>
-               <div className="space-y-4">
-                 <p className="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em]">Terminais de Cartão</p>
-                 <button className="w-full text-left p-6 bg-gray-50 rounded-3xl font-bold text-gray-700 flex justify-between items-center hover:bg-gray-100 transition-colors"><span>Gerenciar Maquininhas Pareadas</span><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg></button>
                </div>
              </div>
              <div className="flex gap-4 mt-10">

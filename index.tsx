@@ -1,12 +1,18 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import './index.css';
 
 const rootElement = document.getElementById('root');
 
 if (!rootElement) {
   console.error("Erro Fatal: Não foi possível encontrar o elemento #root no DOM.");
+  // Tenta criar o elemento caso ele falhe por ordem de carregamento (fallback extremo)
+  const fallbackRoot = document.createElement('div');
+  fallbackRoot.id = 'root';
+  document.body.appendChild(fallbackRoot);
+  const root = ReactDOM.createRoot(fallbackRoot);
+  root.render(<React.StrictMode><App /></React.StrictMode>);
 } else {
   try {
     const root = ReactDOM.createRoot(rootElement);

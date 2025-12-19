@@ -57,10 +57,8 @@ const POSView: React.FC<{
 
   return (
     <div className="flex flex-col lg:flex-row h-full gap-4 overflow-hidden animate-in fade-in duration-500">
-      {/* AREA DE PRODUTOS */}
       <div className="flex-1 flex flex-col min-w-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         
-        {/* HEADER FIXO DE PRODUTOS */}
         <div className="p-4 border-b border-gray-100 space-y-3 shrink-0 bg-white">
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
@@ -113,7 +111,6 @@ const POSView: React.FC<{
           </div>
         </div>
 
-        {/* LISTA DE PRODUTOS COM ROLAGEM VERTICAL */}
         <div className="flex-1 overflow-y-auto p-4 scroll-smooth no-scrollbar">
           {displayedProducts.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-gray-400 py-20">
@@ -170,9 +167,7 @@ const POSView: React.FC<{
         </div>
       </div>
 
-      {/* CARRINHO DE COMPRAS FIXO */}
       <div className="w-full lg:w-[400px] flex flex-col bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden shrink-0 h-full">
-        {/* CABEÇALHO DO CARRINHO */}
         <div className="p-5 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center shrink-0">
           <h2 className="text-lg font-bold flex items-center gap-2">
             <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
@@ -181,7 +176,6 @@ const POSView: React.FC<{
           <span className="px-2 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-md uppercase">{cart.length} itens</span>
         </div>
 
-        {/* ITENS DO CARRINHO COM ROLAGEM VERTICAL */}
         <div className="flex-1 overflow-y-auto no-scrollbar p-4 space-y-3">
           {cart.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-gray-400 opacity-60">
@@ -211,7 +205,6 @@ const POSView: React.FC<{
           )}
         </div>
 
-        {/* RODAPÉ DO CARRINHO FIXO NA BASE */}
         <div className="p-5 bg-white border-t border-gray-100 space-y-4 shrink-0 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
           <div className="flex justify-between items-center">
             <span className="text-gray-500 font-medium">Subtotal</span>
@@ -614,7 +607,7 @@ export default function App() {
                           <div className="flex items-center gap-5 text-left">
                             <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center">
                               {m === 'pix' && <svg className="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m-3 3h2m3-3h2m-5 3v2m4-2v2m-4 7h2m3-3h2m-5 3v2m4-2v2M6 10V8a2 2 0 012-2h2m4 0h2a2 2 0 012 2v2m0 4v2a2 2 0 01-2 2h-2m-4 0H8a2 2 0 01-2-2v-2M9 11.5v1m3-1v1m3-1v1"/></svg>}
-                              {m === 'card' && <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3-3v8a3 3 0 003 3z"/></svg>}
+                              {m === 'card' && <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>}
                               {m === 'cash' && <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>}
                             </div>
                             <div>
@@ -733,15 +726,6 @@ export default function App() {
            </div>
         </div>
       )}
-
-      <style>{`
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-10px); }
-          75% { transform: translateX(10px); }
-        }
-        .animate-shake { animation: shake 0.4s ease-in-out; }
-      `}</style>
     </div>
   );
 }

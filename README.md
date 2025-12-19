@@ -1,75 +1,56 @@
+
 # SuperPOS Pro - PDV Inteligente e Responsivo
 
-O **SuperPOS Pro** é uma solução de Ponto de Venda (POS) de alta performance, projetada para ser totalmente responsiva, funcionando perfeitamente em desktops, tablets e smartphones. Integra o poder da **IA (Google Gemini)** para buscas inteligentes e oferece uma interface premium inspirada em sistemas modernos de autoatendimento.
+O **SuperPOS Pro** é uma solução de Ponto de Venda (POS) moderna, totalmente responsiva e flexível. Projetado para funcionar em desktops, tablets e smartphones com uma interface premium inspirada nas melhores fintechs.
 
 ## 🚀 Tecnologias Utilizadas
 
-- **React 19** (com Hooks e Functional Components)
-- **Tailwind CSS v4** (estilização moderna e utilitária)
-- **Google Gemini API** (IA para busca semântica de produtos)
-- **Lucide/Heroicons** (Ícones vetoriais)
-- **Vite/ESBuild** (processamento rápido)
+- **React 19**
+- **Tailwind CSS v4**
+- **Google Gemini API** (Opcional - para busca semântica)
+- **Lucide Icons**
+- **Vite/ESBuild**
 
 ## ✨ Funcionalidades Principais
 
-- **Interface Híbrida**: Modo Operador (padrão) e Modo Kiosk (autoatendimento).
-- **IA Lookup**: Pesquisa de produtos por intenção de busca (ex: "algo para limpar a casa" retorna detergentes).
-- **Checkout Multi-Pagamento**: Permite dividir uma conta entre Pix, Cartão e Dinheiro.
-- **Gestão de Estoque**: Visualização em tempo real do saldo de produtos.
-- **Relatórios Dinâmicos**: Gráficos de faturamento por categoria e meio de pagamento.
-- **Emissão de Nota Fiscal (Simulada)**: Fluxo completo de cadastro de cliente e transmissão para SEFAZ.
-- **Acessibilidade**: Design focado em toque (touch-friendly) com feedbacks visuais claros.
+- **IA Modular (Opcional)**: Pesquisa de produtos por intenção (ex: "coisas para o café da manhã"). Ativada apenas se uma `API_KEY` for detectada.
+- **Interface Híbrida**: Alterne entre Modo Operador e Modo Kiosk (Autoatendimento).
+- **Checkout Flexível**: Suporte a múltiplos pagamentos (Pix, Cartão, Dinheiro).
+- **Gestão de Estoque**: Controle em tempo real com alertas visuais de baixo estoque.
+- **Relatórios**: Visão consolidada de faturamento por categoria.
+- **Emissão Fiscal**: Fluxo simulado de NF-e integrado ao checkout.
+
+---
+
+## 🎨 IA e Design Modular
+
+As funcionalidades de IA no SuperPOS Pro foram projetadas para serem **Plug-and-Play**:
+1. **Sem Configuração**: Se você não fornecer uma `API_KEY`, o sistema oculta automaticamente os botões de IA e funciona como um PDV tradicional de alta performance.
+2. **Controle Manual**: Em *Configurações*, o gerente pode desativar a IA a qualquer momento para economizar recursos ou simplificar a interface.
+3. **Design Fluido**: A interface se ajusta automaticamente para preencher o espaço da barra de busca quando a IA está desativada.
+
+---
 
 ## 💻 Como Rodar Localmente
 
-### Pré-requisitos
-- **Node.js** (v18 ou superior)
-- **NPM** ou **Yarn**
-
 ### Passo a Passo
 
-1. **Clonar o projeto**
-   ```bash
-   git clone <url-do-repositorio>
-   cd superpos-pro
-   ```
-
-2. **Instalar dependências**
+1. **Instalar dependências**
    ```bash
    npm install
    ```
 
-3. **Configurar Variáveis de Ambiente**
-   Crie um arquivo `.env` na raiz do projeto e adicione sua chave da API do Google Gemini:
+2. **Configuração da IA (Opcional)**
+   Para usar a busca inteligente, adicione sua chave ao arquivo `.env`:
    ```env
    API_KEY=sua_chave_aqui
    ```
 
-4. **Executar em modo Desenvolvimento**
+3. **Executar**
    ```bash
    npm run dev
    ```
-   Acesse `http://localhost:5173` no seu navegador.
-
-## 📦 Build para Produção
-
-Para gerar a versão otimizada para implantação:
-```bash
-npm run build
-```
-Os arquivos serão gerados na pasta `/dist`.
-
-## 🖥️ Modo Kiosk (Autoatendimento)
-
-O sistema suporta um modo de tela cheia sem barras de navegação:
-- Para ativar via URL, adicione o parâmetro: `?kiosk=true`.
-- No menu do usuário (avatar), selecione **"Ocultar Topo (Kiosk)"**.
-- **Sair do Kiosk**: Passe o mouse/toque no canto superior direito para ver o botão "X" ou clique no botão flutuante à esquerda para restaurar a topbar.
-
-## 🔐 Informações de Segurança (Acesso Padrão)
-
-- **Senha Gerencial**: Para cancelar vendas ou realizar estornos, utilize a senha padrão: `1234`.
 
 ---
 
-Desenvolvido com foco em UX e Performance. 🛒✨
+Desenvolvido com foco em UX, Performance e Flexibilidade. 🛒✨
